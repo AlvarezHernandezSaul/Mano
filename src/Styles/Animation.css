@@ -1,0 +1,74 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #003366, #2b2a2a);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 16px;
+  }
+ 
+ /* Animaciones de fondo */
+ .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.269);
+    animation: float 10s infinite ease-in-out;
+    opacity: 0.6;
+  }
+  
+  /* Tamaños y posiciones aleatorias para las burbujas */
+  .bubble:nth-child(1) {
+    width: 80px;
+    height: 80px;
+    left: 10%;
+    animation-duration: 10s;
+  }
+  
+  .bubble:nth-child(2) {
+    width: 60px;
+    height: 60px;
+    left: 30%;
+    animation-duration: 15s;
+    animation-delay: 3s;
+  }
+  
+  .bubble:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    left: 50%;
+    animation-duration: 18s;
+    animation-delay: 5s;
+  }
+  
+  .bubble:nth-child(4) {
+    width: 70px;
+    height: 70px;
+    left: 70%;
+    animation-duration: 20s;
+    animation-delay: 2s;
+  }
+  
+  .bubble:nth-child(5) {
+    width: 90px;
+    height: 90px;
+    left: 90%;
+    animation-duration: 22s;
+    animation-delay: 4s;
+  }
+  
+  /* Animación de flotación */
+  @keyframes float {
+    0% {
+      transform: translateY(100vh);
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(-100vh);
+      opacity: 0;
+    }
+  }

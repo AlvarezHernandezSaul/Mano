@@ -1,0 +1,213 @@
+/* Archivo: App.css */
+
+/* Estilo global */
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #003366, #2b2a2a);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: 16px;
+}
+  
+  /* Contenedor principal */
+  .recursos-aprendizaje {
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
+    border-radius: 10px;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Título */
+  .recursos-titulo {
+    padding-top: 60px;
+    font-size: 2rem;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+  
+  /* Descripción */
+  .recursos-descripcion {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Lista de recursos */
+  .recursos-lista {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 900px;
+    text-align: left;
+  }
+  
+  .recursos-lista li {
+    margin-bottom: 15px;
+  }
+  
+  .recursos-lista li a {
+    text-decoration: none;
+    color: #00aced;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .recursos-lista li a:hover {
+    color: #ff851b;
+  }
+  
+  /* Burbuja flotante */
+  .bubble {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: float 6s infinite ease-in-out;
+    z-index: -1;
+  }
+  
+  .bubble:nth-child(1) {
+    top: 10%;
+    left: 20%;
+    animation-delay: 0s;
+  }
+  
+  .bubble:nth-child(2) {
+    top: 20%;
+    left: 40%;
+    animation-delay: 2s;
+  }
+  
+  .bubble:nth-child(3) {
+    top: 30%;
+    left: 60%;
+    animation-delay: 4s;
+  }
+  
+  .bubble:nth-child(4) {
+    top: 40%;
+    left: 80%;
+    animation-delay: 6s;
+  }
+  
+  .bubble:nth-child(5) {
+    top: 50%;
+    left: 10%;
+    animation-delay: 8s;
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsividad */
+  @media screen and (max-width: 768px) {
+    .recursos-aprendizaje {
+      padding: 15px;
+    }
+  
+    .recursos-titulo {
+      font-size: 1.8rem;
+    }
+  
+    .recursos-descripcion {
+      font-size: 1rem;
+    }
+  
+    .recursos-lista li {
+      font-size: 1rem;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .recursos-titulo {
+      font-size: 1.5rem;
+    }
+  
+    .recursos-descripcion {
+      font-size: 0.9rem;
+    }
+  
+    .recursos-lista li {
+      font-size: 0.9rem;
+    }
+  }
+  
+
+  /* Animaciones de fondo */
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.269);
+  animation: float 10s infinite ease-in-out;
+  opacity: 0.6;
+}
+
+/* Tamaños y posiciones aleatorias para las burbujas */
+.bubble:nth-child(1) {
+  width: 80px;
+  height: 80px;
+  left: 10%;
+  animation-duration: 10s;
+}
+
+.bubble:nth-child(2) {
+  width: 60px;
+  height: 60px;
+  left: 30%;
+  animation-duration: 15s;
+  animation-delay: 3s;
+}
+
+.bubble:nth-child(3) {
+  width: 100px;
+  height: 100px;
+  left: 50%;
+  animation-duration: 18s;
+  animation-delay: 5s;
+}
+
+.bubble:nth-child(4) {
+  width: 70px;
+  height: 70px;
+  left: 70%;
+  animation-duration: 20s;
+  animation-delay: 2s;
+}
+
+.bubble:nth-child(5) {
+  width: 90px;
+  height: 90px;
+  left: 90%;
+  animation-duration: 22s;
+  animation-delay: 4s;
+}
+
+/* Animación de flotación */
+@keyframes float {
+  0% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
+}

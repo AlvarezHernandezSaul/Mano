@@ -1,0 +1,356 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #003366, #2b2a2a);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px; 
+  margin: 0;
+  min-height: 100vh; 
+  box-sizing: border-box;
+  text-align: center; 
+}
+
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  background-color: #002244;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+/* Contenedor de la aplicación */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0px;
+  margin-top: 60px; 
+}
+
+/* Contenido principal */
+.main-content {
+  padding: 20px;
+  text-align: center;
+}
+
+/* Animaciones de fondo */
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: rgb(255, 255, 255);
+  animation: float 10s infinite ease-in-out;
+  opacity: 0.6;
+}
+
+/* Tamaños y posiciones aleatorias para las burbujas */
+.bubble:nth-child(1) {
+  width: 80px;
+  height: 80px;
+  left: 10%;
+  animation-duration: 10s;
+}
+
+.bubble:nth-child(2) {
+  width: 60px;
+  height: 60px;
+  left: 30%;
+  animation-duration: 15s;
+  animation-delay: 3s;
+}
+
+.bubble:nth-child(3) {
+  width: 100px;
+  height: 100px;
+  left: 50%;
+  animation-duration: 18s;
+  animation-delay: 5s;
+}
+
+.bubble:nth-child(4) {
+  width: 70px;
+  height: 70px;
+  left: 70%;
+  animation-duration: 20s;
+  animation-delay: 2s;
+}
+
+.bubble:nth-child(5) {
+  width: 90px;
+  height: 90px;
+  left: 90%;
+  animation-duration: 22s;
+  animation-delay: 4s;
+}
+
+/* Animación de flotación */
+@keyframes float {
+  0% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
+}
+
+/* Throbber */
+.throbber-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 51, 102);
+  z-index: 2000;
+}
+
+.throbber-logo {
+  width: 300px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.7;
+  }
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  width: 90%; /* Reducir ancho en móviles */
+  height: auto; /* Permitir que el contenido determine la altura */
+  max-height: 90%; /* Limitar altura para evitar que el modal desborde */
+  background: white; /* Fondo para visibilidad */
+  border-radius: 10px;
+  padding: 20px;
+  overflow-y: auto; /* Habilitar scroll si el contenido es largo */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Mejor visibilidad */
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%; /* Asegura que se ajuste mejor en pantallas más pequeñas */
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    width: 100%;
+    padding: 5px;
+  }
+}
+
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.camera-selection {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1001;
+}
+
+.camera-button {
+  background: #0066cc;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.camera-button.active {
+  background: #004c99;
+}
+
+.camera-button:hover {
+  background: #005bb5;
+}
+
+@media (max-width: 768px) {
+  .camera-button {
+    font-size: 14px;
+  }
+}
+
+
+/* Botón Traducir */
+.translate-button {
+  background-color: #00aaff;
+  border: none;
+  color: white;
+  padding: 5vh 10vw;
+  font-size: 2.5vw;
+  font-weight: bold;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  max-width: 80%;
+}
+
+@media (max-width: 768px) {
+  .translate-button {
+    font-size: 4vw;
+    padding: 4vh 8vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .translate-button {
+    font-size: 5vw;
+    padding: 3vh 6vw;
+  }
+}
+
+/* Hover y efecto al hacer clic */
+.translate-button:hover {
+  background-color: #007acc;
+}
+
+.translate-button:active {
+  transform: scale(0.98);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .app-logo {
+    width: 200px;
+  }
+
+  .translate-button {
+    font-size: 1.6rem;
+    padding: 14px 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .translate-button {
+    font-size: 1.4rem;
+    padding: 12px 24px;
+  }
+}
+
+/* Descripción de la aplicación */
+.app-description {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  line-height: 1.6;
+  margin: 10px auto;
+  padding: 0 16px;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal; /* Asegura que el texto pueda envolver líneas */
+}
+
+/* Media query para tablets */
+@media (max-width: 768px) {
+  .app-description {
+    font-size: clamp(0.9rem, 2vw, 1.3rem);
+    max-width: 90%;
+    padding: 0 10px;
+  }
+}
+
+/* Media query para móviles estándar */
+@media (max-width: 480px) {
+  .app-description {
+    font-size: clamp(0.8rem, 1.8vw, 1.1rem);
+    padding: 0 8px;
+    max-width: 30%;
+  }
+}
+
+/* Media query para móviles pequeños */
+@media (max-width: 360px) {
+  .app-description {
+    font-size: clamp(0.7rem, 1.6vw, 1rem);
+    padding: 0 5px;
+    max-width: 50%;
+  }
+}
+
+
+
+
+
+/* Título de la aplicación */
+.app-title {
+  font-size: 4vw;
+  margin: 20px auto;
+  text-align: center;
+  max-width: 90%;
+}
+
+@media (max-width: 768px) {
+  .app-title {
+    font-size: 6vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-title {
+    font-size: 8vw;
+  }
+}
