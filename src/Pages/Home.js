@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import '../App.css';
 import HandTracking from '../HandTracking';
 import throbberLogo from '../images/ML_white-rm.png';
+import { MdFlipCameraAndroid } from 'react-icons/md'; // Icono único
 import '../Styles/Navbar.css';
 import '../Styles/Carousel.css';
 import Carousel from '../components/Carousel';
@@ -14,11 +15,9 @@ function Home() {
   const handTrackingRef = useRef(null);
 
   useEffect(() => {
-    // Detectar si el dispositivo es móvil
     const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     setIsMobile(isMobileDevice);
 
-    // Simulación de carga
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
@@ -34,11 +33,11 @@ function Home() {
     setShowHandTracking(false);
   };
 
-  const handleCameraSelection = (camera) => {
-    setSelectedCamera(camera);
-    // Re-inicia la cámara con la cámara seleccionada
+  const toggleCamera = () => {
+    const newCamera = selectedCamera === 'user' ? 'environment' : 'user';
+    setSelectedCamera(newCamera);
     if (handTrackingRef.current) {
-      handTrackingRef.current.switchCamera(camera);
+      handTrackingRef.current.switchCamera(newCamera);
     }
   };
 
@@ -52,7 +51,6 @@ function Home() {
 
   return (
     <div className="app-container">
-      {/* Burbujas flotantes */}
       <div className="bubble"></div>
       <div className="bubble"></div>
       <div className="bubble"></div>
@@ -76,16 +74,17 @@ function Home() {
             {isMobile && (
               <div className="camera-selection">
                 <button
-                  className={`camera-button ${selectedCamera === 'user' ? 'active' : ''}`}
-                  onClick={() => handleCameraSelection('user')}
+                  className="camera-toggle-button"
+                  onClick={toggleCamera}
+                  title="Cambiar Cámara"
                 >
-                  Cámara Frontal
-                </button>
-                <button
-                  className={`camera-button ${selectedCamera === 'environment' ? 'active' : ''}`}
-                  onClick={() => handleCameraSelection('environment')}
-                >
-                  Cámara Trasera
+                  <MdFlipCameraAndroid
+                    size={32}
+                    color={selectedCamera === 'user' ? '#004c99' : '#808080'} // Gris para inactivo
+                    style={{
+                      transform: selectedCamera === 'user' ? 'scaleX(-1)' : 'none', // Flip para frontal
+                    }}
+                  />
                 </button>
               </div>
             )}
