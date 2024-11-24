@@ -126,7 +126,7 @@ const HandTracking = forwardRef((props, ref) => {
     }}
   >
     <div style={{ width: '100%' }}>
-      <video ref={videoRef} style={{ display: 'none' }} />
+    <video   ref={videoRef}  autoPlay  playsInline  muted  style={{ display: 'none' }}/>
       {isCameraActive ? (
         <canvas
           ref={canvasRef}
