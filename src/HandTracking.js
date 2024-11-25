@@ -52,14 +52,17 @@ const HandTracking = forwardRef((props, ref) => {
   const stopCamera = () => {
     if (camera) {
       camera.stop();
+      camera = null; // Libera la referencia
       console.log('Cámara detenida');
     }
     if (handModel) {
       handModel.close();
+      handModel = null; // Libera la referencia
       console.log('Modelo de manos detenido');
     }
     setIsCameraActive(false);
   };
+  
 
   // Exponer la función stopCamera
   useImperativeHandle(ref, () => ({
@@ -133,9 +136,9 @@ const HandTracking = forwardRef((props, ref) => {
           width={640}
           height={480}
           style={{
-            width: '90vw', // Abarca el 90% del ancho de la pantalla en móvil
-            maxWidth: '640px', // Límite máximo en pantallas grandes
-            height: 'auto', // Ajusta la altura proporcionalmente
+            width: '90vw', 
+            maxWidth: '640px', 
+            height: 'auto', 
           }}
         />
       ) : (
