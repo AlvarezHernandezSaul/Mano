@@ -9,6 +9,7 @@ const HandTracking = forwardRef((props, ref) => {
   const canvasRef = useRef(null);
   const [sign, setSign] = useState(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
+  const [isCooldown, setIsCooldown] = useState(false); // Manejo de tiempo entre solicitudes
   let camera;
   let handModel;
 
@@ -19,7 +20,7 @@ const HandTracking = forwardRef((props, ref) => {
     });
 
     handModel.setOptions({
-      maxNumHands: 2,
+      maxNumHands: 1, // Procesar solo una mano para mayor simplicidad
       modelComplexity: 1,
       minDetectionConfidence: 0.7,
       minTrackingConfidence: 0.7,
@@ -48,28 +49,27 @@ const HandTracking = forwardRef((props, ref) => {
     return () => stopCamera();
   }, [isCameraActive]);
 
-  // Función para detener la cámara
+  // Detener la cámara
   const stopCamera = () => {
     if (camera) {
       camera.stop();
-      camera = null; // Libera la referencia
+      camera = null;
       console.log('Cámara detenida');
     }
     if (handModel) {
       handModel.close();
-      handModel = null; // Libera la referencia
+      handModel = null;
       console.log('Modelo de manos detenido');
     }
     setIsCameraActive(false);
   };
-  
 
-  // Exponer la función stopCamera
+  // Exponer función stopCamera
   useImperativeHandle(ref, () => ({
     stopCamera,
   }));
 
-  // Función llamada al obtener resultados de Mediapipe
+  // Función para manejar los resultados de Mediapipe
   async function onResults(results) {
     if (!canvasRef.current || !isCameraActive) return;
 
@@ -86,78 +86,118 @@ const HandTracking = forwardRef((props, ref) => {
       canvasRef.current.height
     );
 
-    // Dibujar landmarks de las manos
+    const allLandmarks = []; // Lista para almacenar landmarks de todas las manos
+
     if (results.multiHandLandmarks) {
       for (const landmarks of results.multiHandLandmarks) {
         draw.drawConnectors(canvasCtx, landmarks, hands.HAND_CONNECTIONS, { color: '#00FF00', lineWidth: 5 });
         draw.drawLandmarks(canvasCtx, landmarks, { color: '#FF0000', lineWidth: 2 });
+
+        // Extraer landmarks como [x1, y1, z1, ..., x21, y21, z21]
+        const landmarksArray = landmarks.map((landmark) => [
+          landmark.x,
+          landmark.y,
+          landmark.z,
+        ]).flat();
+
+        allLandmarks.push(landmarksArray); // Agregar landmarks de esta mano
       }
 
-      // Enviar imagen procesada al backend
-      const imageSrc = canvasRef.current.toDataURL('image/jpeg');
-      await sendImageToBackend(imageSrc);
+      // Enviar landmarks de todas las manos al backend
+      if (allLandmarks.length > 0 && !isCooldown) {
+        await sendLandmarksToBackend(allLandmarks);
+      }
     }
   }
 
-  // Función para enviar la imagen al backend
-  async function sendImageToBackend(imageSrc) {
+
+  // Enviar landmarks al backend
+  async function sendLandmarksToBackend(allLandmarks) {
     try {
+      setIsCooldown(true); // Inicia el cooldown
+
+      // Enviar landmarks al backend
       const response = await axios.post('https://flask-app-40377871940.us-central1.run.app/predict', {
-        image: imageSrc,
+        landmarks: allLandmarks,
       });
 
-      if (response.data && response.data.sign) {
-        setSign(response.data.sign);
-        console.log('Predicción recibida:', response.data.sign);
+      if (response.data && response.data.signs) {
+        setSign(response.data.signs.join(' / ')); // Combina las letras detectadas
+        console.log('Predicciones recibidas:', response.data.signs);
       } else {
-        console.error('No se recibió predicción del backend');
+        console.error('No se recibieron predicciones del backend');
       }
+
+      // Restablece cooldown después de 1 segundo
+      setTimeout(() => setIsCooldown(false), 1000);
     } catch (error) {
       console.error('Error al conectar con el backend:', error);
+      setIsCooldown(false); // En caso de error, restablecer cooldown
     }
   }
+
 
   return (
     <div
     style={{
       display: 'flex',
-      flexDirection: 'column', // Cambiar a columna para vistas móviles
+      flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
       gap: '20px',
       padding: '10px',
     }}
   >
-    <div style={{ width: '100%' }}>
-    <video   ref={videoRef}  autoPlay  playsInline  muted  style={{ display: 'none' }}/>
+    <div style={{ width: '100%', position: 'relative' }}>
+      {/* Video oculto */}
+      <video
+        ref={videoRef}
+        autoPlay
+        playsInline
+        muted
+        style={{
+          display: 'none', // Video oculto
+          width: '100%',
+          height: 'auto',
+        }}
+      />
+      
+      {/* Canvas que muestra la cámara */}
       {isCameraActive ? (
         <canvas
           ref={canvasRef}
           width={640}
           height={480}
           style={{
-            width: '90vw', 
-            maxWidth: '640px', 
-            height: 'auto', 
+            width: '100%',
+            maxWidth: '640px',
+            height: 'auto',
           }}
         />
       ) : (
         <p style={{ textAlign: 'center', fontSize: '16px' }}>Cargando cámara...</p>
       )}
-    </div>
-    <div
-      style={{
-        marginTop: '10px',
-        fontSize: '18px', // Reducido para dispositivos más pequeños
-        color: 'red',
-        textAlign: 'center',
-        width: '90%', // Alinea el texto en el 90% del ancho de la pantalla
-      }}
-    >
-      {sign ? `Letra: ${sign}` : 'Esperando predicción...'}
+  
+      {/* Texto centrado en la parte inferior del video/canvas */}
+      <p
+        style={{
+          position: 'absolute',
+          bottom: '10px', // Coloca el texto en la parte inferior
+          left: '50%',
+          transform: 'translateX(-50%)',
+          fontSize: '24px', // Ajusta el tamaño de la fuente
+          fontWeight: 'bold', // Negrita
+          color: 'red', // Color rojo
+          margin: 0,
+        }}
+      >
+        {sign ? `Letra: ${sign}` : 'Esperando predicción...'}
+      </p>
     </div>
   </div>
   
+
+
   );
 });
 
