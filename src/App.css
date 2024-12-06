@@ -157,35 +157,45 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 /* Contenido del Modal */
 .modal-content {
-  width: 100%;
-  max-width: 640px; /* Limitar ancho máximo */
-  max-height: 90vh; /* Limitar altura para evitar que el modal desborde */
+  width: 90vw; /* 90% del ancho de la pantalla */
+  height: 90vh; /* 90% de la altura de la pantalla */
   background: white;
   border-radius: 10px;
   padding: 20px;
-  box-sizing: border-box; /* Incluir el padding en el tamaño del modal */
-  overflow-y: auto; /* Permitir el scroll solo en el contenido, no en el modal */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  overflow: hidden;
   position: relative;
+  display: flex;
+  justify-content: center; /* Centra el video/canvas dentro del modal */
+  align-items: center; /* Centra el video/canvas dentro del modal */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
+/* Ajustes para asegurar que el video se ajuste bien */
+.modal-content video, .modal-content canvas {
+  width: 100%; /* El video/canvas ocupa el 100% del ancho del contenedor */
+  height: 100%; /* El video/canvas ocupa el 100% de la altura del contenedor */
+  object-fit: contain; /* Mantener la proporción del video sin recortar, o usa cover si quieres que llene el contenedor */
+}
 
 /* Ajustes en pantallas pequeñas */
 @media (max-width: 768px) {
   .modal-content {
-    width: 95%; /* Asegura que se ajuste mejor en pantallas más pequeñas */
+    width: 90vw;
+    height: 90vh;
     padding: 10px;
   }
 }
 
 @media (max-width: 480px) {
   .modal-content {
-    width: 100%;
+    width: 90vw;
+    height: 90vh;
     padding: 5px;
   }
 }

@@ -117,7 +117,7 @@ const HandTracking = forwardRef((props, ref) => {
       setIsCooldown(true); // Inicia el cooldown
 
       // Enviar landmarks al backend
-      const response = await axios.post('https://flask-app-40377871940.us-central1.run.app/predict', {
+      const response = await axios.post('Http://34.95.23.244:8080/predict', {
         landmarks: allLandmarks,
       });
 
@@ -139,63 +139,66 @@ const HandTracking = forwardRef((props, ref) => {
 
   return (
     <div
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '20px',
-      padding: '10px',
-    }}
-  >
-    <div style={{ width: '100%', position: 'relative' }}>
-      {/* Video oculto */}
-      <video
-        ref={videoRef}
-        autoPlay
-        playsInline
-        muted
-        style={{
-          display: 'none', // Video oculto
-          width: '100%',
-          height: 'auto',
-        }}
-      />
-      
-      {/* Canvas que muestra la cámara */}
-      {isCameraActive ? (
-        <canvas
-          ref={canvasRef}
-          width={640}
-          height={480}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '20px',
+        padding: '10px',
+      }}
+    >
+      <div style={{
+        width: '100%',
+        height: '100%',
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          muted
           style={{
-            width: '100%',
-            maxWidth: '640px',
-            height: 'auto',
+            display: isCameraActive ? 'none' : 'block',  // Mostrar el video solo cuando la cámara esté activa
+            width: '100%',  // El video ocupa el 100% del ancho del contenedor
+            height: '100%', // El video ocupa el 100% de la altura del contenedor
+            objectFit: 'contain', // Asegura que el video mantenga su relación de aspecto
           }}
         />
-      ) : (
-        <p style={{ textAlign: 'center', fontSize: '16px' }}>Cargando cámara...</p>
-      )}
-  
-      {/* Texto centrado en la parte inferior del video/canvas */}
-      <p
-        style={{
-          position: 'absolute',
-          bottom: '10px', // Coloca el texto en la parte inferior
-          left: '50%',
-          transform: 'translateX(-50%)',
-          fontSize: '24px', // Ajusta el tamaño de la fuente
-          fontWeight: 'bold', // Negrita
-          color: 'red', // Color rojo
-          margin: 0,
-        }}
-      >
-        {sign ? `Letra: ${sign}` : 'Esperando predicción...'}
-      </p>
+        {isCameraActive ? (
+          <canvas
+            ref={canvasRef}
+            style={{
+              width: '100%',  // El canvas ocupa el 100% del ancho del contenedor
+              height: '100%', // El canvas ocupa el 100% de la altura del contenedor
+              objectFit: 'contain', // Asegura que el canvas mantenga su relación de aspecto
+            }}
+          />
+        ) : (
+          <p style={{ textAlign: 'center', fontSize: '16px' }}>Cargando cámara...</p>
+        )}
+
+        {/* Texto centrado en la parte inferior del video/canvas */}
+        <p
+          style={{
+            position: 'absolute',
+            bottom: '10px', // Coloca el texto en la parte inferior
+            left: '50%',
+            transform: 'translateX(-50%)',
+            fontSize: '24px',
+            fontWeight: 'bold',
+            color: 'red',
+            margin: 0,
+          }}
+        >
+          {sign ? `Letra: ${sign}` : 'Esperando predicción...'}
+        </p>
+      </div>
     </div>
-  </div>
-  
 
 
   );
