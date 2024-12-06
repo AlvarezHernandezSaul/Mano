@@ -117,7 +117,7 @@ const HandTracking = forwardRef((props, ref) => {
       setIsCooldown(true); // Inicia el cooldown
 
       // Enviar landmarks al backend
-      const response = await axios.post('http://34.95.23.244:8080/predict', {
+      const response = await axios.post('https://flask-app-40377871940.us-central1.run.app/predict', {
         landmarks: allLandmarks,
       });
 
