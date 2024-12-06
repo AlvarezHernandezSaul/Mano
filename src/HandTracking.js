@@ -128,7 +128,7 @@ const HandTracking = forwardRef((props, ref) => {
         console.error('No se recibieron predicciones del backend');
       }
 
-      // Restablece cooldown después de 1 segundo
+      // Restablece cooldown
       setTimeout(() => setIsCooldown(false), 1000);
     } catch (error) {
       console.error('Error al conectar con el backend:', error);
